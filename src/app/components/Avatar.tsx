@@ -1,3 +1,5 @@
+import { resolveAssetUrl } from "../services/api";
+
 interface AvatarProps {
   src?: string | null;
   name: string;
@@ -24,7 +26,7 @@ export function Avatar({ src, name, size = "md", className = "" }: AvatarProps) 
       className={`${sizes[size]} rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center font-semibold text-white flex-shrink-0 ${className}`}
     >
       {src ? (
-        <img src={src} alt={name} className="w-full h-full rounded-full object-cover" />
+        <img src={resolveAssetUrl(src) ?? undefined} alt={name} className="w-full h-full rounded-full object-cover" />
       ) : (
         initials
       )}

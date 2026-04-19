@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { useToast } from "../components/Toast";
 import * as api from "../services/api";
+import { resolveAssetUrl } from "../services/api";
 import { Card } from "../components/Card";
 import { Avatar } from "../components/Avatar";
 import { Badge } from "../components/Badge";
@@ -358,7 +359,7 @@ export function Dashboard() {
 
                   {entry.type === "photo" && (
                     <>
-                      <img src={entry.url} alt={entry.caption} className="rounded-lg w-full" />
+                      <img src={resolveAssetUrl(entry.url) ?? undefined} alt={entry.caption} className="rounded-lg w-full" />
                       {editingEntryId === entry.id ? (
                         <div className="space-y-2">
                           <input

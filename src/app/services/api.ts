@@ -1,8 +1,32 @@
 // Real API service — all calls go to the backend via /api/v1/*
-// Vite proxies /api → http://localhost:3001 in development
+// In local dev, Vite proxies /api → http://localhost:3001 by default.
+
+const API_BASE_URL = (import.meta.env.VITE_API_URL ?? "").replace(/\/+$/, "");
+
+function buildApiUrl(path: string) {
+  if (/^(https?:)?\/\//i.test(path)) {
+    return path;
+  }
+
+  const normalizedPath = path.startsWith("/") ? path : `/${path}`;
+  return `${API_BASE_URL}${normalizedPath}`;
+}
+
+export function resolveAssetUrl(path?: string | null) {
+  if (!path) {
+    return path;
+  }
+
+  if (/^(https?:)?\/\//i.test(path) || path.startsWith("blob:") || path.startsWith("data:")) {
+    return path;
+  }
+
+  const normalizedPath = path.startsWith("/") ? path : `/${path}`;
+  return `${API_BASE_URL}${normalizedPath}`;
+}
 
 async function request<T>(url: string, options: RequestInit = {}): Promise<T> {
-  const res = await fetch(url, {
+  const res = await fetch(buildApiUrl(url), {
     ...options,
     credentials: "include",
     headers: {
@@ -132,7 +156,7 @@ export async function uploadPhoto(file: File, caption: string, _isCheckin: boole
   const form = new FormData();
   form.append("file", file);
 
-  const res = await fetch("/api/v1/upload", {
+  const res = await fetch(buildApiUrl("/api/v1/upload"), {
     method: "POST",
     credentials: "include",
     body: form,
