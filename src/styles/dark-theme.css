@@ -1,0 +1,35 @@
+/* Dark theme overrides for Home Duty App */
+:root {
+  background-color: #0b1220;
+  color: white;
+}
+
+body {
+  background-color: #0b1220;
+  color: white;
+}
+
+/* Safe area for iOS devices */
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.pt-safe {
+  padding-top: env(safe-area-inset-top);
+}
+
+/* Animation for toast */
+@keyframes slide-up {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-up {
+  animation: slide-up 0.3s ease-out;
+}
